@@ -9,11 +9,11 @@ close all; clear all;
 %% Simulation parameters
 % momentum distribution parameters (NORMAL distribution)
 mean{1} = [0;0;10];
-stddev{1} = [1;1;1];
+stddev{1} = [1;1;0];
 mean{2} = [0;0;-10];
-stddev{2} = [1;1;1];
+stddev{2} = [1;1;0];
 
-n_pair = 5000;   % sample number (number of pairs for TBC)
+n_pair = 10000;   % sample number (number of pairs for TBC)
 
 %% Simulation
 % create sample from momentum distribution and output histogram
@@ -22,7 +22,7 @@ figure();
 for i=1:2
     for j=1:3
         momentum{i}(j,:) = random('norm',mean{i}(j),stddev{i}(j),[1,n_pair]);
-        subplot(2,3,(i-1)*3+j); hist(momentum{i}(j,:));
+        subplot(2,3,(i-1)*3+j); hist(momentum{i}(j,:),30);
     end
 end
 
@@ -52,7 +52,7 @@ p_scat{2} = -p_0_scat + p_centre;   % the collision partner
 figure();
 for i=1:2
     for j=1:3
-        subplot(2,3,(i-1)*3+j); hist(p_scat{i}(j,:));
+        subplot(2,3,(i-1)*3+j); hist(p_scat{i}(j,:),30);
     end
 end
 
