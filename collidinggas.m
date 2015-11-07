@@ -8,8 +8,10 @@ close all; clear all;
 
 %% Simulation parameters
 % momentum distribution parameters (NORMAL distribution)
-mean = [0;0;0];
-dev = [1;1;10];
+mean{1} = [0;0;10];
+stddev{1} = [1;1;1];
+mean{2} = [0;0;-10];
+stddev{2} = [1;1;1];
 
 n_pair = 5000;   % sample number (number of pairs for TBC)
 
@@ -19,7 +21,7 @@ momentum = cell(2,1);
 figure();
 for i=1:2
     for j=1:3
-        momentum{i}(j,:) = random('norm',mean(j),dev(j),[1,n_pair]);
+        momentum{i}(j,:) = random('norm',mean{i}(j),stddev{i}(j),[1,n_pair]);
         subplot(2,3,(i-1)*3+j); hist(momentum{i}(j,:));
     end
 end
@@ -33,8 +35,8 @@ for i=1:n_pair
     p_0_abs(i) = norm(p_0(:,i));
 end
 
-scat_angle(1,:) = 2*pi*rand([1,n_pair]);  % polar scattering angle
-scat_angle(2,:) = pi*rand([1,n_pair]);    % azimutal scattering angle
+scat_angle(1,:) = pi*rand([1,n_pair]);      % polar scattering angle
+scat_angle(2,:) = 2*pi*rand([1,n_pair]);    % azimutal scattering angle
 
 p_0_scat = zeros(3,n_pair);         % scattered momenta in com
 p_0_scat(1,:) = p_0_abs.*sin(scat_angle(1,:)).*cos(scat_angle(2,:));
@@ -50,16 +52,16 @@ p_scat{2} = -p_0_scat + p_centre;   % the collision partner
 figure();
 for i=1:2
     for j=1:3
-    subplot(2,3,(i-1)*3+j); hist(p_scat{i}(j,:));
+        subplot(2,3,(i-1)*3+j); hist(p_scat{i}(j,:));
     end
 end
 
 % scatter plot
 figure();
 for i = 1:2
-    scatter3(momentum{i}(1,:),momentum{i}(2,:),momentum{i}(3,:),0.1,'b'); hold on;
+    scatter3(momentum{i}(1,:),momentum{i}(2,:),momentum{i}(3,:),2,'b','filled'); hold on;
 end
 
 for i = 1:2
-    scatter3(p_scat{i}(1,:),p_scat{i}(2,:),p_scat{i}(3,:),0.1,'r'); hold on;
+    scatter3(p_scat{i}(1,:),p_scat{i}(2,:),p_scat{i}(3,:),2,'r','filled'); hold on;
 end
