@@ -5,25 +5,65 @@
 
 
 %% Parameters
-half_angle = pi/10;     % half-cone angle for integration
+int_frac = 1e-4;                    % fraction of total halo to perform integration
+half_angle = acos(1-2*int_frac);    % half-cone angle
 
 
 %% Calculation of relative number difference
-% comparison region
-temp_azi = 2*pi*rand();
-temp_pol = acos(2*rand()-1);
+% reference z-axis region
+temp_azi = 0;
+temp_pol = 0;
 
 v_norm = zeros(3,1);      % unit norm vector for specifying region
 v_norm(1) = sin(temp_pol)*cos(temp_azi);      
 v_norm(2) = sin(temp_pol)*sin(temp_azi);
-v_norm(3) = sqrt(1-v_norm(1)^2-v_norm(2)^2);
+v_norm(3) = cos(temp_pol);
 
 p_proj = v_norm'*p_halo./sqrt(sum(p_halo.^2));  % projection of halo momentum vector onto the normal
-%p_proj_sort = sort(p_proj);                     % could be useful
 in_region = p_proj>cos(half_angle);
 
-N = sum(in_region);             % number of particles in selected region
+N_ref = sum(in_region);             % number of particles in ref region
 
+% comparison region
+N_rep = 1000;
+data_sqz = zeros(3,N_rep);
+for i = 1:N_rep
+    if i==1
+        % reference region
+        temp_pol = 0;
+        temp_azi = 0;
+    elseif i==2
+        % directly opposite region
+        temp_pol = pi;
+        temp_azi = 0;
+    else
+        % randomise others
+        temp_pol = acos(2*rand()-1);
+        temp_azi = 2*pi*rand();
+    end
+    
+    v_norm = zeros(3,1);      % unit norm vector for specifying region
+    v_norm(1) = sin(temp_pol)*cos(temp_azi);
+    v_norm(2) = sin(temp_pol)*sin(temp_azi);
+    v_norm(3) = cos(temp_pol);
+    
+    p_proj = v_norm'*p_halo./sqrt(sum(p_halo.^2));  % projection of halo momentum vector onto the normal
+    %p_proj_sort = sort(p_proj);                     % could be useful
+    in_region = p_proj>cos(half_angle);
+    
+    N = sum(in_region);             % number of particles in selected region
+    N_diff = N - N_ref;
+    
+    data_sqz(:,i) = [temp_pol;temp_azi;N_diff];
+end
+
+data_sqz_sort = sortrows(data_sqz')';
+
+% Output plot of squeezing
+figure(); plot(data_sqz_sort(1,:),data_sqz_sort(3,:));
+grid on;
+set(gca,'XTick',0:pi/4:pi);
+set(gca,'XTickLabel',{'0','pi/4','pi/2','3pi/4','pi'});
 
 % %% Graphical check: region selection and particle counting
 % % Gather all particles in region
