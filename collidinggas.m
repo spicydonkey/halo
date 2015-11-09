@@ -8,9 +8,10 @@ close all; clear variables;
 
 %% Simulation parameters
 % momentum distribution parameters (NORMAL distribution)
-mean{1} = [3;0;0];
+mean{1} = [1;0;0];
 stddev{1} = [0.1;0.1;0.1];
-mean{2} = [-3;0;0];
+%mean{2} = [-3;0;0];
+mean{2} = -mean{1};     % fix global origin as centre of motion for the system
 stddev{2} = [0.1;0.1;0.1];
 
 n_pair = 10000;   % sample number (number of pairs for TBC)
