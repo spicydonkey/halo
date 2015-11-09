@@ -4,7 +4,9 @@
 % DK Shin
 % 07.11.15
 
+
 close all; clear variables;
+
 
 %% Simulation parameters
 % momentum distribution parameters (NORMAL distribution)
@@ -15,6 +17,7 @@ mean{2} = -mean{1};     % fix global origin as centre of motion for the system
 stddev{2} = [0.1;0.1;0.1];
 
 n_pair = 10000;   % sample number (number of pairs for TBC)
+
 
 %% Simulation
 % create sample from momentum distribution and output histogram
@@ -47,6 +50,9 @@ p_0_scat(3,:) = p_0_abs.*cos(scat_angle(1,:));
 p_out = cell(2,1);
 p_out{1} = p_0_scat + P_com;        % tranform scattered momentum back to the original reference frame
 p_out{2} = -p_0_scat + P_com;       % the collision partner
+
+p_halo = [p_out{1} p_out{2}];       % collate the two separate scattered momentum distribution
+
 
 %% Graphical output
 % Scattered momentum distribution
