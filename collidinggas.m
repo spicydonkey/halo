@@ -4,14 +4,14 @@
 % DK Shin
 % 07.11.15
 
-close all; clear all;
+close all; clear variables;
 
 %% Simulation parameters
 % momentum distribution parameters (NORMAL distribution)
-mean{1} = [0;0;10];
-stddev{1} = [1;1;0];
-mean{2} = [0;0;-10];
-stddev{2} = [1;1;0];
+mean{1} = [3;0;0];
+stddev{1} = [0.1;0.1;0.1];
+mean{2} = [-3;0;0];
+stddev{2} = [0.1;0.1;0.1];
 
 n_pair = 10000;   % sample number (number of pairs for TBC)
 
@@ -35,8 +35,9 @@ for i=1:n_pair
     p_0_abs(i) = norm(p_0(:,i));
 end
 
-scat_angle(1,:) = pi*rand([1,n_pair]);      % polar scattering angle
-scat_angle(2,:) = 2*pi*rand([1,n_pair]);    % azimutal scattering angle
+%   scat_angle(1,:) = pi*rand([1,n_pair]);      % incorrect polar scattering angle
+scat_angle(1,:) = acos(2*rand([1,n_pair])-1);   % polar scattering angle for spherically uniform distribution
+scat_angle(2,:) = 2*pi*rand([1,n_pair]);        % azimutal scattering angle
 
 p_0_scat = zeros(3,n_pair);         % scattered momenta in com
 p_0_scat(1,:) = p_0_abs.*sin(scat_angle(1,:)).*cos(scat_angle(2,:));
@@ -63,5 +64,5 @@ for i = 1:2
 end
 
 for i = 1:2
-    scatter3(p_scat{i}(1,:),p_scat{i}(2,:),p_scat{i}(3,:),2,'r','filled'); hold on;
+    scatter3(p_scat{i}(1,:),p_scat{i}(2,:),p_scat{i}(3,:),2,'r','filled'); hold on; axis equal;
 end
