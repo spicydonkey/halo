@@ -3,11 +3,11 @@ function p_halo = halo_sim(p_dist, n_pair)
 %% Simulation
 % create sample from momentum distribution and output histogram
 p_in = cell(2,1);
-figure();
+%figure();
 for i=1:2
     for j=1:3
         p_in{i}(j,:) = random('norm',p_dist{i}{1}(j),p_dist{i}{2}(j),[1,n_pair]);
-        subplot(2,3,(i-1)*3+j); hist(p_in{i}(j,:),30);
+        %subplot(2,3,(i-1)*3+j); hist(p_in{i}(j,:),30);
     end
 end
 
@@ -34,24 +34,24 @@ p_out{2} = -p_0_scat + P_com;       % the collision partner
 
 p_halo = [p_out{1} p_out{2}];       % collate the two separate scattered momentum distribution
 
-
-%% Graphical output
-% Scattered momentum distribution
-figure();
-for i=1:2
-    for j=1:3
-        subplot(2,3,(i-1)*3+j); hist(p_out{i}(j,:),30);
-    end
-end
-
-% scatter plot
-figure();
-for i = 1:2
-    scatter3(p_in{i}(1,:),p_in{i}(2,:),p_in{i}(3,:),2,'b','filled'); hold on;
-end
-
-for i = 1:2
-    scatter3(p_out{i}(1,:),p_out{i}(2,:),p_out{i}(3,:),2,'r','filled'); hold on; axis equal;
-end
+% 
+% %% Graphical output
+% % Scattered momentum distribution
+% figure();
+% for i=1:2
+%     for j=1:3
+%         subplot(2,3,(i-1)*3+j); hist(p_out{i}(j,:),30);
+%     end
+% end
+% 
+% % scatter plot
+% figure(42);
+% for i = 1:2
+%     scatter3(p_in{i}(1,:),p_in{i}(2,:),p_in{i}(3,:),2,'b','filled'); hold on;
+% end
+% 
+% for i = 1:2
+%     scatter3(p_out{i}(1,:),p_out{i}(2,:),p_out{i}(3,:),2,'r','filled'); hold on; axis equal;
+% end
 
 return
