@@ -11,14 +11,13 @@ close all; clear variables;
 N_sim=1000;      % number of simulations
 
 % Halo simulation
-% bec momentum distribution (GAUSSIAN)
+% bec momentum distribution (NOTE: only GAUSSIAN momentum distribution at this stage)
 P_dist{1}{1} = [1;0;0];         % BEC1 mean momentum
 P_dist{1}{2} = [0.1;0.1;0.1];   % BEC1 momentum std
 P_dist{2}{1} = -P_dist{1}{1};   % BEC2 mean momentum (experimentally fix global origin as centre of motion)
 P_dist{2}{2} = [0.1;0.1;0.1];   % BEC2 momentum std
 
-% number of collision pairs (can improve by uncertainties and detector qe,
-% etc)
+% number of collision pairs (can improve by uncertainties and detector qe, etc)
 N_pair=1000;
 
 % Data analysis
@@ -39,12 +38,13 @@ for i_sim = 1:N_sim
 end
 clear i_sim;
 
+
 %% Data analysis
 % Calculate normalised number difference variance between zones
 N_diff = N_zone - ones(size(N_zone,1),1)*N_zone(1,:);
 
 V_ndiff = ( mean(N_diff.^2,2) - mean(N_diff,2).^2 )./( mean(N_zone(1,:)) + mean(N_zone,2) );    % formula for normalsed number difference variance
-V_ndiff = reshape(V_ndiff,Nz_polar,Nz_azim);
+V_ndiff = reshape(V_ndiff,Nz_polar,Nz_azim);        % reshape array for surface plot
 
 
 %% Graphical output
