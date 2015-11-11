@@ -5,17 +5,17 @@ zone_half_angle = acos(1-2*zone_frac);      % half-cone angle of zone
 
 %% Calculation of relative number difference
 
-n_zone = zeros(n_pol,n_azim);   % reshaped later to a column vector
+n_zone = zeros(n_pol,n_azim);       % reshaped later to a column vector
+z_pol = linspace(0,pi,n_pol);
+z_azim = linspace(0,2*pi,n_azim);
+
 for i = 1:n_pol
-    z_pol = (i-1)*(pi/(n_pol-1));
-    for j = 1:n_azim
-        z_azim = (j-1)*(2*pi/n_azim);
-        
+    for j = 1:n_azim        
         % zone-normal vector
         z_norm = zeros(3,1);      % unit norm vector for specifying region
-        z_norm(1) = sin(z_pol)*cos(z_azim);
-        z_norm(2) = sin(z_pol)*sin(z_azim);
-        z_norm(3) = cos(z_pol);
+        z_norm(1) = sin(z_pol(i))*cos(z_azim(j));
+        z_norm(2) = sin(z_pol(i))*sin(z_azim(j));
+        z_norm(3) = cos(z_pol(i));
         
         p_proj = z_norm'*p_halo./sqrt(sum(p_halo.^2));  % projection of halo momentum vector onto the normal
 
@@ -43,8 +43,5 @@ for i = 1:n_pol
     end
 end
 n_zone = reshape(n_zone,n_pol*n_azim,1);
-
-
-
 
 return

@@ -4,7 +4,7 @@
 % 10.11.15
 
 
-close all; clear all;
+close all; clear variables;
 
 
 %% Parameters
@@ -22,10 +22,9 @@ P_dist{2}{2} = [0.1;0.1;0.1];   % BEC2 momentum std
 N_pair=1000;
 
 % Data analysis
-zone_frac=1e-2;      % fraction of halo to perform num diff analysis
-% number of "polar" and "azimutal" zones (must be EVEN to update later)
-Nz_polar=11;
-Nz_azim=4;
+zone_frac=1e-2;     % fraction of halo to perform num diff analysis
+Nz_polar=10;        % number of polar and azimuthal zones to compare
+Nz_azim=10;
 
 
 %% Simulation
@@ -35,24 +34,28 @@ for i_sim = 1:N_sim
     % run halo simulation
     P_halo = halo_sim(P_dist,N_pair);
     
-    % find number vs. theta,phi in this simulation
-    % AND collate result in N_zone
+    % find number vs zones in this simulation and collate
     N_zone(:,i_sim) = halo_analyse(P_halo,zone_frac,Nz_polar,Nz_azim);
 end
-
+clear i_sim;
 
 %% Data analysis
 % Calculate normalised number difference variance between zones
 N_diff = N_zone - ones(size(N_zone,1),1)*N_zone(1,:);
-V_ndiff = ( mean(N_diff.^2,2) - mean(N_diff,2).^2 )./( mean(N_zone(1,:)) + mean(N_zone,2) );
 
+V_ndiff = ( mean(N_diff.^2,2) - mean(N_diff,2).^2 )./( mean(N_zone(1,:)) + mean(N_zone,2) );    % formula for normalsed number difference variance
 V_ndiff = reshape(V_ndiff,Nz_polar,Nz_azim);
 
 
 %% Graphical output
-% Plot V(theta,phi)
+% Plot the dependence of the variance of number difference on location of zones
 theta = linspace(0,pi,Nz_polar);
-phi = linspace(0,2*pi,Nz_azim+1);
-phi = phi(1:Nz_azim);
+phi = linspace(0,2*pi,Nz_azim);
 
-surf(theta,phi,V_ndiff);
+[THETA, PHI] = meshgrid(theta,phi);
+
+figure();
+surf(THETA',PHI',V_ndiff);
+title(['N_{sim}=',num2str(N_sim),', N_{pair}=',num2str(N_pair),', \Omega_{frac}=',num2str(zone_frac),', \sigma_{p1}=',mat2str(P_dist{1}{2}),', \sigma_{p2}=',mat2str(P_dist{2}{2})]);
+xlabel('\theta'); ylabel('\phi'); zlabel('Normalised variance');
+xlim([0,pi]); ylim([0,2*pi]);
