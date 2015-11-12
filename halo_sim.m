@@ -1,4 +1,4 @@
-function p_halo = halo_sim(p_dist, n_pair)
+function [p_halo, p_in] = halo_sim(p_dist, n_pair)
 
 %% Simulation
 % create sample from momentum distribution and output histogram
