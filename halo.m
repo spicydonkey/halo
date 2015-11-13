@@ -79,7 +79,8 @@ phi = linspace(0,2*pi,Nz_azim);
 
 figure();
 surf(THETA',PHI',V_ndiff);
-title(['N_{sim}=',num2str(N_sim),', N_{pair}=',num2str(N_pair),', \Omega_{frac}=',num2str(zone_frac),', \sigma_{p1}=',mat2str(P_dist{1}{2}),', \sigma_{p2}=',mat2str(P_dist{2}{2})]);
+%title(['N_{sim}=',num2str(N_sim),', N_{pair}=',num2str(N_pair),', \Omega_{frac}=',num2str(zone_frac),', \sigma_{p1}=',mat2str(P_dist{1}{2},3),', \sigma_{p2}=',mat2str(P_dist{2}{2},3)]);
+title(['N_{sim}=',num2str(N_sim),', N_{pair}=',num2str(N_pair),', \Omega_{frac}=',num2str(zone_frac),', N_0=',num2str(N_0),', \omega=',mat2str(w_trap)]);
 xlabel('\Delta\theta'); ylabel('\Delta\phi'); zlabel('Normalised variance');
 xlim([0,pi]); ylim([0,2*pi]);
 
