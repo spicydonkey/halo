@@ -99,6 +99,8 @@ end
 P_halo_abs = sum(P_halo.^2).^0.5;
 figure();
 hist(P_halo_abs,n_bins);
+title('Momentum magnitude distribution in scattering halo (in COM frame)');
+xlabel('|p|');
 
 % Simulation single-shot
 figure();
@@ -107,5 +109,6 @@ for i = 1:2
     hold on;
 end
 scatter3(P_halo(1,:),P_halo(2,:),P_halo(3,:),2,'r','filled');
+title('Colliding Bose-Einstein condensates in momentum space');
 xlabel('p_{x}'); ylabel('p_{y}'); zlabel('p_{z}');
 axis equal;
