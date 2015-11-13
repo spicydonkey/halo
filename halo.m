@@ -7,15 +7,27 @@
 close all; clear variables;
 
 
+%% Constants
+hbar = 1.055e-34;
+m_He = 6.65e-27;
+
+
 %% Parameters
 N_sim=1000;      % number of simulations
 
-% Halo simulation
-% bec momentum distribution (NOTE: only GAUSSIAN momentum distribution at this stage)
-P_dist{1}{1} = [1;0;0];         % BEC1 mean momentum
-P_dist{1}{2} = [0.1;0.1;0.1];   % BEC1 momentum std
+% pre-collision BEC momentum distribution (reqs mean momentum and TF radius to approximate spread)
+% mean momentum
+P_dist{1}{1} = m_He*[1;0;0];    % BEC1 mean momentum
 P_dist{2}{1} = -P_dist{1}{1};   % BEC2 mean momentum (experimentally fix global origin as centre of motion)
-P_dist{2}{2} = [0.1;0.1;0.1];   % BEC2 momentum std
+
+% Thomas-Fermi radii
+R_bec{1} = [1;1;1]*1e-6;      % BEC1 TF radius
+R_bec{2} = [1;1;1]*1e-6;      % BEC2 TF radius
+
+% TF condensate momentum distribution (approximated by Gaussian)
+for i=1:2
+    P_dist{i}{2} = hbar*(1.69./R_bec{i});   % standard deviation (calculated from HWHM=1.99/R_i)
+end
 
 % number of collision pairs (can improve by uncertainties and detector qe, etc)
 N_pair=1000;
