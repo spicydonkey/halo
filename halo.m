@@ -31,7 +31,7 @@ N_zone = zeros(Nz_polar*Nz_azim,N_sim);
 for i_sim = 1:N_sim
     close all;
     % run halo simulation
-    P_halo = halo_sim(P_dist,N_pair);
+    [P_halo, P_in] = halo_sim(P_dist,N_pair);
     
     % find number vs zones in this simulation and collate
     N_zone(:,i_sim) = halo_analyse(P_halo,zone_frac,Nz_polar,Nz_azim);
@@ -47,7 +47,7 @@ V_ndiff = ( mean(N_diff.^2,2) - mean(N_diff,2).^2 )./( mean(N_zone(1,:)) + mean(
 V_ndiff = reshape(V_ndiff,Nz_polar,Nz_azim);        % reshape array for surface plot
 
 
-%% Graphical output
+%% Number difference squeezing visualisation
 % Plot the dependence of the variance of number difference on location of zones
 theta = linspace(0,pi,Nz_polar);
 phi = linspace(0,2*pi,Nz_azim);
@@ -57,5 +57,30 @@ phi = linspace(0,2*pi,Nz_azim);
 figure();
 surf(THETA',PHI',V_ndiff);
 title(['N_{sim}=',num2str(N_sim),', N_{pair}=',num2str(N_pair),', \Omega_{frac}=',num2str(zone_frac),', \sigma_{p1}=',mat2str(P_dist{1}{2}),', \sigma_{p2}=',mat2str(P_dist{2}{2})]);
-xlabel('\theta'); ylabel('\phi'); zlabel('Normalised variance');
+xlabel('\Delta\theta'); ylabel('\Delta\phi'); zlabel('Normalised variance');
 xlim([0,pi]); ylim([0,2*pi]);
+
+
+%% Halo simulation visualisation
+n_bins = 30;
+% pre-collision condensate momentum distribution
+figure();
+for i=1:2
+    for j=1:3
+        subplot(2,3,(i-1)*3+j); hist(P_in{i}(j,:),n_bins);
+    end
+end
+
+% halo momentum (magnitude) distribution
+P_halo_abs = sum(P_halo.^2).^0.5;
+figure();
+hist(P_halo_abs,n_bins);
+
+% Simulation single-shot
+figure();
+for i = 1:2
+    scatter3(P_in{i}(1,:),P_in{i}(2,:),P_in{i}(3,:),2,'b','filled');
+    hold on;
+end
+scatter3(P_halo(1,:),P_halo(2,:),P_halo(3,:),2,'r','filled');
+axis equal;
