@@ -20,10 +20,10 @@ N_pair=1000;    % number of collision pairs (can improve by uncertainties and de
 % Pre-collision BEC momentum distribution 
 % T-F approximation: requires population and mean momentum of colliding condensates, and trap frequency
 
-N_0 = 1e6;      % number of atoms in condensate
+N_0 = 1e4;      % number of atoms in condensate
 
 % mean momentum
-P_dist{1}{1} = m_He*[0;0;1];    % BEC1 mean momentum
+P_dist{1}{1} = m_He*[1;0;0];    % BEC1 mean momentum
 P_dist{2}{1} = -P_dist{1}{1};   % BEC2 mean momentum (experimentally fix global origin as centre of motion)
 
 % trap frequency (harmonic potential)
@@ -41,7 +41,7 @@ a_bar = sqrt(hbar/(m_He*w_trap_bar));   % mean characteristic length of trap
 mu = 1.4771*hbar*w_trap_bar*(N_0*a_He/w_trap_bar)^0.4;  % chemical potential
 
 % Thomas-Fermi radii
-R_bec = sqrt(2*mu/m_He)./(w_trap.^2);
+R_bec = sqrt(2*mu/m_He)./w_trap;
 
 % TF condensate momentum distribution (approximated by Gaussian)
 for i=1:2
@@ -106,4 +106,5 @@ for i = 1:2
     hold on;
 end
 scatter3(P_halo(1,:),P_halo(2,:),P_halo(3,:),2,'r','filled');
+xlabel('p_{x}'); ylabel('p_{y}'); zlabel('p_{z}');
 axis equal;
