@@ -10,32 +10,43 @@ close all; clear variables;
 %% Constants
 hbar = 1.055e-34;
 m_He = 6.65e-27;
+a_He = 7.5e-9;      % s-wave scattering length of He*
 
 
 %% Parameters
-N_sim=1000;      % number of simulations
+N_sim=1000;     % number of simulations
+N_pair=1000;    % number of collision pairs (can improve by uncertainties and detector qe, etc)
 
-% pre-collision BEC momentum distribution (reqs mean momentum and TF radius to approximate spread)
+% Pre-collision BEC momentum distribution 
+% T-F approximation: requires population and mean momentum of colliding condensates, and trap frequency
+
+N_0 = 1e6;      % number of atoms in condensate
+
 % mean momentum
-P_dist{1}{1} = m_He*[1;0;0];    % BEC1 mean momentum
+P_dist{1}{1} = m_He*[0;0;1];    % BEC1 mean momentum
 P_dist{2}{1} = -P_dist{1}{1};   % BEC2 mean momentum (experimentally fix global origin as centre of motion)
 
-% Thomas-Fermi radii
-R_bec{1} = [1;1;1]*1e-6;      % BEC1 TF radius
-R_bec{2} = [1;1;1]*1e-6;      % BEC2 TF radius
-
-% TF condensate momentum distribution (approximated by Gaussian)
-for i=1:2
-    P_dist{i}{2} = hbar*(1.69./R_bec{i});   % standard deviation (calculated from HWHM=1.99/R_i)
-end
-
-% number of collision pairs (can improve by uncertainties and detector qe, etc)
-N_pair=1000;
+% trap frequency (harmonic potential)
+w_trap = [50;1000;1000];
 
 % Data analysis
 zone_frac=1e-2;     % fraction of halo to perform num diff analysis
 Nz_polar=10;        % number of polar and azimuthal zones to compare
 Nz_azim=10;
+
+
+%% Calculation of T-F momentum wavefunction
+w_trap_bar = prod(w_trap)^(1/3);
+a_bar = sqrt(hbar/(m_He*w_trap_bar));   % mean characteristic length of trap
+mu = 1.4771*hbar*w_trap_bar*(N_0*a_He/w_trap_bar)^0.4;  % chemical potential
+
+% Thomas-Fermi radii
+R_bec = sqrt(2*mu/m_He)./(w_trap.^2);
+
+% TF condensate momentum distribution (approximated by Gaussian)
+for i=1:2
+    P_dist{i}{2} = hbar*(1.69./R_bec);  % standard deviation (calculated from HWHM=1.99/R_i)
+end
 
 
 %% Simulation
