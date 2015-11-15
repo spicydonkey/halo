@@ -5,15 +5,19 @@
 % 16.11.2015
 
 
-% Pair-wise momentum sum
-N_p = size(P_halo,2);   % number of particles detected in momentum space
-
-P_sum = zeros(3,N_p*(N_p-1)/2);     % preallocate size of array storing pair sum
-
-i_cat = 1;      % index at start of list comprehension
-for i=1:N_p
-    P_sum(:,i_cat:(i_cat+(N_p-i)-1)) = P_halo(:,i+1:end)-P_halo(:,i)*ones(1,N_p-i);
-    i_cat = i_cat + N_p - i;    % update index location
+%% G2 momentum correlation function
+P_PAIR_SUM = cell(N_sim,1);
+for i = 1:N_sim
+    P_PAIR_SUM{i} = pairsum(P_HALO{i});
 end
 
-P_sum_mag = sqrt(sum(P_sum.^2,1));  % magnitude of normed pairwise sum momenta
+%% Normalisation
+% collate all halo
+P_HALO_NORM = zeros(3,N_sim*2*N_pair);
+for i = 1:N_sim
+    P_HALO_NORM(:,(i-1)*2*N_pair+1:i*2*N_pair);
+end
+
+P_PAIR_NORM = pairsum(P_HALO_NORM);
+
+%P_sum_mag = sqrt(sum(P_sum.^2,1));  % magnitude of normed pairwise sum momenta
