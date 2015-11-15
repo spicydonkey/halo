@@ -52,27 +52,28 @@ end
 
 %% Simulation
 N_zone = zeros(Nz_polar*Nz_azim,N_sim);
+P_HALO = cell(N_sim,1);
 for i_sim = 1:N_sim
     close all;
     % run halo simulation
     [P_halo, P_in] = halo_sim(P_dist,N_pair);
     
+    % Scale momentum to recoil velocity unit (BEC initial momentum)
+    for i=1:length(P_in)
+        P_in{i} = P_in{i}/P_norm;
+    end
+    P_halo = P_halo/P_norm;
+    
     % find number vs zones in this simulation and collate
     N_zone(:,i_sim) = halo_analyse(P_halo,zone_frac,Nz_polar,Nz_azim);
     
-    
+    % save scattered halo momentum data
+    P_HALO{i_sim} = P_halo;
 end
 clear i_sim;
+    
 
-
-%% Momentum unit scaling
-for i=1:length(P_in)
-    P_in{i} = P_in{i}/P_norm;
-end
-P_halo = P_halo/P_norm;
-
-
-%% Data analysis
+%% Number difference
 % Calculate normalised number difference variance between zones
 N_diff = N_zone - ones(size(N_zone,1),1)*N_zone(1,:);
 
