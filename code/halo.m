@@ -14,17 +14,18 @@ a_He = 7.5e-9;      % s-wave scattering length of He*
 
 
 %% Parameters
-N_sim=1000;     % number of simulations
-N_pair=1000;    % number of collision pairs (can improve by uncertainties and detector qe, etc)
+N_sim=10;     % number of simulations
+N_pair=100;    % number of collision pairs (can improve by uncertainties and detector qe, etc)
 
 % Pre-collision BEC momentum distribution 
 % T-F approximation: requires population and mean momentum of colliding condensates, and trap frequency
 
-N_0 = 1e8;      % number of atoms in condensate
+N_0 = 1e4;      % number of atoms in condensate
 
 % mean momentum
 P_dist{1}{1} = m_He*[1;0;0];    % BEC1 mean momentum
 P_dist{2}{1} = -P_dist{1}{1};   % BEC2 mean momentum (experimentally fix global origin as centre of motion)
+P_norm = norm(P_dist{1}{1});    % BEC com momentum (recoil velocity from Bragg/Raman) to normalise all other momenta
 
 % trap frequency (harmonic potential)
 w_trap = [50;1000;1000];
@@ -58,8 +59,17 @@ for i_sim = 1:N_sim
     
     % find number vs zones in this simulation and collate
     N_zone(:,i_sim) = halo_analyse(P_halo,zone_frac,Nz_polar,Nz_azim);
+    
+    
 end
 clear i_sim;
+
+
+%% Momentum unit scaling
+for i=1:length(P_in)
+    P_in{i} = P_in{i}/P_norm;
+end
+P_halo = P_halo/P_norm;
 
 
 %% Data analysis
