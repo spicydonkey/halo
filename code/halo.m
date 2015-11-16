@@ -14,8 +14,10 @@ a_He = 7.5e-9;      % s-wave scattering length of He*
 
 
 %% Parameters
-N_sim=10;     % number of simulations
-N_pair=100;    % number of collision pairs (can improve by uncertainties and detector qe, etc)
+N_sim=10;       % number of simulations
+N_halo=100;     % number of atoms in detected halo
+
+QE = 1;         % quantum efficiency of detector
 
 % Pre-collision BEC momentum distribution 
 % T-F approximation: requires population and mean momentum of colliding condensates, and trap frequency
@@ -56,7 +58,7 @@ P_HALO = cell(N_sim,1);
 for i_sim = 1:N_sim
     close all;
     % run halo simulation
-    [P_halo, P_in] = halo_sim(P_dist,N_pair);
+    [P_halo, P_in] = halo_sim(P_dist,N_halo);
     
     % Scale momentum to recoil velocity unit (BEC initial momentum)
     for i=1:length(P_in)
@@ -90,8 +92,8 @@ phi = linspace(0,2*pi,Nz_azim);
 
 figure();
 surf(THETA',PHI',V_ndiff);
-%title(['N_{sim}=',num2str(N_sim),', N_{pair}=',num2str(N_pair),', \Omega_{frac}=',num2str(zone_frac),', \sigma_{p1}=',mat2str(P_dist{1}{2},3),', \sigma_{p2}=',mat2str(P_dist{2}{2},3)]);
-title(['N_{sim}=',num2str(N_sim),', N_{pair}=',num2str(N_pair),', \Omega_{frac}=',num2str(zone_frac),', N_0=',num2str(N_0,2),', \omega=',mat2str(w_trap)]);
+%title(['N_{sim}=',num2str(N_sim),', N_{pair}=',num2str(N_halo),', \Omega_{frac}=',num2str(zone_frac),', \sigma_{p1}=',mat2str(P_dist{1}{2},3),', \sigma_{p2}=',mat2str(P_dist{2}{2},3)]);
+title(['N_{sim}=',num2str(N_sim),', N_{pair}=',num2str(N_halo),', \Omega_{frac}=',num2str(zone_frac),', N_0=',num2str(N_0,2),', \omega=',mat2str(w_trap)]);
 xlabel('\Delta\theta'); ylabel('\Delta\phi'); zlabel('Normalised variance');
 xlim([0,pi]); ylim([0,2*pi]);
 

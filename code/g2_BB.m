@@ -15,7 +15,7 @@ end
 % collate all halo
 P_HALO_NORM = zeros(3,N_sim*2*N_pair);
 for i = 1:N_sim
-    P_HALO_NORM(:,(i-1)*2*N_pair+1:i*2*N_pair);
+    P_HALO_NORM(:,(i-1)*N_halo+1:i*N_halo);
 end
 
 P_PAIR_NORM = pairsum(P_HALO_NORM);
