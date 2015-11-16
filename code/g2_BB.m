@@ -27,3 +27,25 @@ end
 P_BB_norm = pairsum(P_HALO_all);
 
 
+%% Filtering and projection
+deltaP = 5*(prod(P_dist{1}{2}))^(1/3)/P_norm;     % momentum filtering radius
+is_Pcorr = sqrt(sum(P_BB_all.^2,1))<deltaP;     % boolean array to select momentum pairs within BB region
+
+P_BB_filt = zeros(3,sum(is_Pcorr));
+counter=1;
+for i=1:length(is_Pcorr)
+    if is_Pcorr(i)
+        P_BB_filt(:,counter) = P_BB_all(:,i);
+        counter = counter + 1;
+    end
+end
+
+is_Pcorr_all = sqrt(sum(P_BB_norm.^2,1))<deltaP;
+P_BB_norm_filt = zeros(3,sum(is_Pcorr_all));
+counter=1;
+for i=1:length(is_Pcorr_all)
+    if is_Pcorr_all(i)
+        P_BB_norm_filt(:,counter) = P_BB_norm(:,i);
+        counter = counter + 1;
+    end
+end
