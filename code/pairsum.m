@@ -14,6 +14,7 @@ in_delta = sqrt(sum(P_temp.^2,1))<p_delta;  % elements within correlation region
 N = sum(in_delta);      % number of p vectors within corr region of interest
 deltaP_bb = zeros(3,N);
 
+% filter out widely separated pairwise correlations
 counter = 1;
 for i=1:size(P_temp,2)
     if in_delta(i)
