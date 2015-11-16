@@ -1,4 +1,16 @@
-function [p_halo, p_in] = halo_sim(p_dist, n_pair)
+function [p_halo, p_in] = halo_sim(p_dist, n_halo ,q_eff)
+
+%% Quantum efficiency - random selection
+% build boolean array for predicting atom detection for constant halo
+% number
+is_detected = [];
+while sum(sum(is_detected))<n_halo
+    is_detected = [is_detected (rand(2,1)<q_eff)];
+end
+if sum(sum(is_detected))>n_halo
+    is_detected(2,end)=0;
+end
+n_pair = size(is_detected,2);   % number of pairs to collide in simulation
 
 %% Simulation
 % create sample from momentum distribution and output histogram
@@ -32,7 +44,17 @@ p_out = cell(2,1);
 p_out{1} = p_0_scat + P_com;        % tranform scattered momentum back to the original reference frame
 p_out{2} = -p_0_scat + P_com;       % the collision partner
 
-p_halo = [p_out{1} p_out{2}];       % collate the two separate scattered momentum distribution
+% build detected halo from RNG quantum detection
+p_halo = zeros(3,n_halo);
+counter = 1;
+for i=1:2
+    for j=1:n_pair
+        if(is_detected(i,j))
+            p_halo(:,counter) = p_out{i}(:,j);
+            counter = counter + 1;
+        end
+    end
+end
 
 % 
 % %% Graphical output
