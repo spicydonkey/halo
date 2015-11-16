@@ -6,7 +6,7 @@
 
 
 %% g2 parameters
-p_delta = 0.1;
+p_delta = 0.2;      % scaled p-ball radius for g2 correlation evaluation
 
 
 %% G2 momentum correlation function
@@ -32,10 +32,17 @@ P_BB_norm = pairsum(P_HALO_all,p_delta);
 
 
 %% Histogramming
-[G2_x, bin_x] = hist(P_BB_all(1,:));
-norm_x = hist(P_BB_norm(1,:),bin_x);
-
-g2_x = N_sim*G2_x./norm_x;
+G2 = cell(3,1);
+bin = cell(3,1);
+G2norm = cell(3,1);
+g2 = cell(3,1);
 
 figure();
-bar(bin_x,g2_x);
+for i=1:3
+    [G2{i}, bin{i}] = hist(P_BB_all(i,:),50);
+    G2norm{i} = hist(P_BB_norm(i,:),bin{i});
+    
+    g2{i} = N_sim*G2{i}./G2norm{i};
+    subplot(3,1,i);
+    plot(bin{i},g2{i}); grid on;
+end
