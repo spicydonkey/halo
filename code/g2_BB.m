@@ -11,13 +11,19 @@ for i = 1:N_sim
     P_PAIR_SUM{i} = pairsum(P_HALO{i});
 end
 
+P_PAIR_SUM_TOT = [];
+for i = 1:N_sim
+    P_PAIR_SUM_TOT = [P_PAIR_SUM_TOT P_PAIR_SUM{i}];
+end
+
+
 %% Normalisation
 % collate all halo
-P_HALO_NORM = zeros(3,N_sim*2*N_pair);
+P_HALO_NORM = zeros(3,N_sim*N_halo);
 for i = 1:N_sim
-    P_HALO_NORM(:,(i-1)*N_halo+1:i*N_halo);
+    P_HALO_NORM(:,(i-1)*N_halo+1:i*N_halo)=P_HALO{i};
 end
 
 P_PAIR_NORM = pairsum(P_HALO_NORM);
 
-%P_sum_mag = sqrt(sum(P_sum.^2,1));  % magnitude of normed pairwise sum momenta
+

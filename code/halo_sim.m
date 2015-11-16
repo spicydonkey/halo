@@ -15,11 +15,10 @@ n_pair = size(is_detected,2);   % number of pairs to collide in simulation
 %% Simulation
 % create sample from momentum distribution and output histogram
 p_in = cell(2,1);
-%figure();
+
 for i=1:2
     for j=1:3
         p_in{i}(j,:) = random('norm',p_dist{i}{1}(j),p_dist{i}{2}(j),[1,n_pair]);
-        %subplot(2,3,(i-1)*3+j); hist(p_in{i}(j,:),30);
     end
 end
 
@@ -55,25 +54,5 @@ for i=1:2
         end
     end
 end
-
-% 
-% %% Graphical output
-% % Scattered momentum distribution
-% figure();
-% for i=1:2
-%     for j=1:3
-%         subplot(2,3,(i-1)*3+j); hist(p_out{i}(j,:),30);
-%     end
-% end
-% 
-% % scatter plot
-% figure(42);
-% for i = 1:2
-%     scatter3(p_in{i}(1,:),p_in{i}(2,:),p_in{i}(3,:),2,'b','filled'); hold on;
-% end
-% 
-% for i = 1:2
-%     scatter3(p_out{i}(1,:),p_out{i}(2,:),p_out{i}(3,:),2,'r','filled'); hold on; axis equal;
-% end
 
 return

@@ -14,8 +14,8 @@ a_He = 7.5e-9;      % s-wave scattering length of He*
 
 
 %% Parameters
-N_sim=100000;       % number of simulations
-N_halo=1e2;     % number of atoms in detected halo
+N_sim=30;       % number of simulations
+N_halo=30;     % number of atoms in detected halo
 
 QE = 1;         % quantum efficiency of detector
 
@@ -30,7 +30,7 @@ P_dist{2}{1} = -P_dist{1}{1};   % BEC2 mean momentum (experimentally fix global 
 P_norm = norm(P_dist{1}{1});    % BEC com momentum (recoil velocity from Bragg/Raman) to normalise all other momenta
 
 % trap frequency (harmonic potential)
-w_trap = [50;1000;1000];
+w_trap = [50;100;100];
 
 % Data analysis
 zone_frac=1e-2;     % fraction of halo to perform num diff analysis
