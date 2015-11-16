@@ -14,10 +14,10 @@ a_He = 7.5e-9;      % s-wave scattering length of He*
 
 
 %% Parameters
-N_sim=1000;       % number of simulations
+N_sim=5000;       % number of simulations
 N_halo=30;     % number of atoms in detected halo
 
-QE = 1;         % quantum efficiency of detector
+QE = 0.1;         % quantum efficiency of detector
 
 % Pre-collision BEC momentum distribution 
 % T-F approximation: requires population and mean momentum of colliding condensates, and trap frequency
