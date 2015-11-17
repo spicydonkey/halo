@@ -4,7 +4,7 @@ bin = cell(3,1);
 G2norm = cell(3,1);
 g2 = cell(3,1);
 
-n_hist_bin = 50;
+n_hist_bin = 30;
 
 figure();
 colors = 'rgb';
