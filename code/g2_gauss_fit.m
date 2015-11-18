@@ -25,32 +25,33 @@ title(fig(1),'Gaussian fit to \it{g^{(2)}-1}');
 %% Correlation width comparison
 w_p_dist = sqrt(2*log(2))*P_dist{1}{2}/P_norm;  % HWHM (width) of momentum distribution
 
-w_BB = zeros(3,3);
+w_BB = zeros(3,1);      % HWHM width of BB correlation length (and error)
+err_wBB = zeros(3,1);
 for i=1:3
-    w_BB(i,1) = g2_fit{i}.c1;
-    CI = confint(g2_fit{i},0.99);
-    CI_std = CI(:,3).';
-    w_BB(i,2:3) = CI_std;
+    w_BB(i) = g2_fit{i}.c1;
+    CI = confint(g2_fit{i},0.95);
+    err_wBB(i) = diff(CI(:,3))/2;    % CI error
 end
-w_BB = 0.8326*w_BB;
+w_BB = 0.8326*w_BB;     % scale spread measure to HWHM (ref. MATLAB gauss fit parameter "c1")
+err_wBB = 0.8326*err_wBB;
 
 % Calculate normalised ratios (wrt momentum dist) for comparison
-r_wBB_S = zeros(3,3);
-for i=1:3
-    r_wBB_S(i,:) = w_BB(i,:)/w_p_dist(i);
-end
+r_wBB_S = w_BB./w_p_dist;
+err_r_wBB_S = err_wBB./w_p_dist;
 
 % Plot
 figure();
-boxplot(r_wBB_S'); hold on;
-scatter([1,2,3],1.08*[1,1,1],'filled'); hold on;
-scatter([1,2,3],sqrt(2)*[1,1,1],'filled'); hold on;
+errorbar([1,2,3],r_wBB_S,err_r_wBB_S,'ok'); hold on;
+plot([1,2,3],1.08*[1,1,1]); hold on;
+plot([1,2,3],sqrt(2)*[1,1,1]); hold on;
 title('\it w_i^{(BB)}/w_i^{(S)} \rm comparison between simulation and theory');
 ylim([1,2]);
 xlabel('axes index');
 
 % g(2) correlation length vs. halo thickness
 r_wBB_halo = w_BB/w_halo;
+err_r_wBB_halo = err_wBB/w_halo;
 figure();
-boxplot(r_wBB_halo');
+errorbar([1,2,3],r_wBB_halo,err_r_wBB_halo,'ok'); hold on;
 title('g^{(2)} correlation length vs. halo thickness: \it w_i^{(BB)}/w_{halo}');
+xlabel('axes index');
