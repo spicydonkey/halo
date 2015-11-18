@@ -2,6 +2,9 @@
 % 18.11.2015
 % DK Shin
 
+clear all; close all;
+
+run('sim_config.m');
 run('halo.m');
 run('g2_BB.m');
 run('g2_histo.m');
