@@ -3,44 +3,10 @@
 % DK Shin
 % 10.11.15
 
-
-close all; clear variables;
-
-
-%% Constants
-hbar = 1.055e-34;
-m_He = 6.65e-27;
-a_He = 7.5e-9;      % s-wave scattering length of He*
-
-
-%% Parameters
-N_sim=5000;       % number of simulations
-N_halo=30;     % number of atoms in detected halo
-
-QE = 0.1;         % quantum efficiency of detector
-
-% Pre-collision BEC momentum distribution 
-% T-F approximation: requires population and mean momentum of colliding condensates, and trap frequency
-
-N_0 = 1e4;      % number of atoms in condensate
-
-% mean momentum
-P_dist{1}{1} = m_He*[1;0;0];    % BEC1 mean momentum
-P_dist{2}{1} = -P_dist{1}{1};   % BEC2 mean momentum (experimentally fix global origin as centre of motion)
-P_norm = norm(P_dist{1}{1});    % BEC com momentum (recoil velocity from Bragg/Raman) to normalise all other momenta
-
-% trap frequency (harmonic potential)
-w_trap = [50;100;100];
-
-% Data analysis
-zone_frac=1e-2;     % fraction of halo to perform num diff analysis
-Nz_polar=10;        % number of polar and azimuthal zones to compare
-Nz_azim=10;
-
-
 %% Calculation of T-F momentum wavefunction
+% Pre-collision BEC momentum distribution is calculated from T-F approximation: requires population and mean momentum of colliding condensates, and trap frequency
 w_trap_bar = prod(w_trap)^(1/3);
-a_bar = sqrt(hbar/(m_He*w_trap_bar));   % mean characteristic length of trap
+a_bar = sqrt(hbar/(m_He*w_trap_bar));       % mean characteristic length of trap
 mu = 1.4771*hbar*w_trap_bar*(N_0*a_He/w_trap_bar)^0.4;  % chemical potential
 
 % Thomas-Fermi radii
