@@ -2,7 +2,7 @@
 % DK Shin
 
 %% Parameter
-n_hist_bin = 30;
+n_hist_bin = 40;
 
 %% Histogramming
 G2 = cell(3,1);
