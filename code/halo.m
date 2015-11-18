@@ -74,6 +74,12 @@ for i_sim = 1:N_sim
 end
 clear i_sim;
     
+% collate all halo
+P_HALO_all = zeros(3,N_sim*N_halo);
+for i = 1:N_sim
+    P_HALO_all(:,(i-1)*N_halo+1:i*N_halo)=P_HALO{i};
+end
+
 
 %% Number difference
 % Calculate normalised number difference variance between zones
@@ -99,22 +105,6 @@ xlim([0,pi]); ylim([0,2*pi]);
 
 
 %% Halo simulation visualisation
-n_bins = 30;
-% pre-collision condensate momentum distribution
-figure();
-for i=1:2
-    for j=1:3
-        subplot(2,3,(i-1)*3+j); hist(P_in{i}(j,:),n_bins);
-    end
-end
-
-% halo momentum (magnitude) distribution
-P_halo_abs = sum(P_halo.^2).^0.5;
-figure();
-hist(P_halo_abs,n_bins);
-title('Momentum magnitude distribution in scattering halo (in COM frame)');
-xlabel('|p|');
-
 % Simulation single-shot
 figure();
 for i = 1:2
@@ -122,6 +112,21 @@ for i = 1:2
     hold on;
 end
 scatter3(P_halo(1,:),P_halo(2,:),P_halo(3,:),2,'r','filled');
-title('Colliding Bose-Einstein condensates in momentum space');
+title('Colliding Bose-Einstein condensates in momentum space (single shot)');
 xlabel('p_{x}'); ylabel('p_{y}'); zlabel('p_{z}');
 axis equal;
+
+% Halo momentum distribution
+P_HALO_abs = sqrt(sum(P_HALO_all.^2,1));    % momentum magnitude in halo
+
+[halo_p_count, halo_p_bin] = hist(P_HALO_abs,100);
+halo_p_count = halo_p_count/sum(halo_p_count);  % normalise distribution
+
+halo_p_fit = fit(halo_p_bin.',halo_p_count.','gauss1'); % Gaussian fit
+w_halo = 0.8326*halo_p_fit.c1;
+
+figure();
+bar(halo_p_bin,halo_p_count); hold on;
+plot(halo_p_fit,halo_p_bin,halo_p_count);
+title('Scattered halo momentum (magnitude) distribution');
+xlabel('P/P_{rec}'); ylabel('P');

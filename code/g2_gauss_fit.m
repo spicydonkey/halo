@@ -22,33 +22,35 @@ hold off;
 title(fig(1),'Gaussian fit to \it{g^{(2)}-1}');
 
 
-%% Comparison to theory
+%% Correlation width comparison
 w_p_dist = sqrt(2*log(2))*P_dist{1}{2}/P_norm;  % HWHM (width) of momentum distribution
 
-w_BB_sim = zeros(3,3);
+w_BB = zeros(3,3);
 for i=1:3
-    w_BB_sim(i,1) = g2_fit{i}.c1;
+    w_BB(i,1) = g2_fit{i}.c1;
     CI = confint(g2_fit{i},0.99);
     CI_std = CI(:,3).';
-    w_BB_sim(i,2:3) = CI_std;
+    w_BB(i,2:3) = CI_std;
 end
-w_BB_sim = 0.8326*w_BB_sim;
-
-w_BB_theory = 1.08*w_p_dist;
+w_BB = 0.8326*w_BB;
 
 % Calculate normalised ratios (wrt momentum dist) for comparison
-r_wBBsim = zeros(3,3);
+r_wBB_S = zeros(3,3);
 for i=1:3
-    r_wBBsim(i,:) = w_BB_sim(i,:)/w_p_dist(i);
+    r_wBB_S(i,:) = w_BB(i,:)/w_p_dist(i);
 end
-
-r_BB_theory = 1.08*ones(3,1);
 
 % Plot
 figure();
-boxplot(r_wBBsim'); hold on;
+boxplot(r_wBB_S'); hold on;
 scatter([1,2,3],1.08*[1,1,1],'filled'); hold on;
 scatter([1,2,3],sqrt(2)*[1,1,1],'filled'); hold on;
 title('\it w_i^{(BB)}/w_i^{(S)} \rm comparison between simulation and theory');
 ylim([1,2]);
 xlabel('axes index');
+
+% g(2) correlation length vs. halo thickness
+r_wBB_halo = w_BB/w_halo;
+figure();
+boxplot(r_wBB_halo');
+title('g^{(2)} correlation length vs. halo thickness: \it w_i^{(BB)}/w_{halo}');

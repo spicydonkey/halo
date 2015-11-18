@@ -1,10 +1,14 @@
+%% Histogram plot of g2
+% DK Shin
+
+%% Parameter
+n_hist_bin = 30;
+
 %% Histogramming
 G2 = cell(3,1);
 bin = cell(3,1);
 G2norm = cell(3,1);
 g2 = cell(3,1);
-
-n_hist_bin = 30;
 
 figure();
 colors = 'rgb';
