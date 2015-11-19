@@ -71,13 +71,25 @@ xlim([0,pi]); ylim([0,2*pi]);
 
 
 %% Halo simulation visualisation
+% % Single halo
+% figure();
+% for i = 1:2
+%     scatter3(P_in{i}(1,:),P_in{i}(2,:),P_in{i}(3,:),2,'b','filled');
+%     hold on;
+% end
+% scatter3(P_halo(1,:),P_halo(2,:),P_halo(3,:),2,'r','filled');
+% title('Colliding Bose-Einstein condensates in momentum space (single shot)');
+% xlabel('p_{x}'); ylabel('p_{y}'); zlabel('p_{z}');
+% axis equal;
+
+% 3D scatter halo plot
 figure();
-for i = 1:2
-    scatter3(P_in{i}(1,:),P_in{i}(2,:),P_in{i}(3,:),2,'b','filled');
-    hold on;
+N_halo_plot = 5000;
+if N_halo_plot > N_sim*N_halo
+    N_halo_plot = N_sim*N_halo;
 end
-scatter3(P_halo(1,:),P_halo(2,:),P_halo(3,:),2,'r','filled');
-title('Colliding Bose-Einstein condensates in momentum space (single shot)');
+scatter3(P_HALO_all(1,1:N_halo_plot),P_HALO_all(2,1:N_halo_plot),P_HALO_all(3,1:N_halo_plot),2,'r','filled');
+title('Scattering halo in momentum space');
 xlabel('p_{x}'); ylabel('p_{y}'); zlabel('p_{z}');
 axis equal;
 
