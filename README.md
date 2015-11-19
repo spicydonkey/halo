@@ -28,3 +28,22 @@ Scattering halo qualitatively resembling experiments are produced and data analy
 	~~explain~~
 6. **Run** g2_ogren_kheruntsyan.m
 	~~explain~~
+
+## He* BEC collision experiment
+* Raman/Bragg laser wavelength: 1083nm
+* He* s-wave scattering length: a_He = 7.5nm
+* He4 mass: m_He = 6.65e-27 kg
+
+## BEC momentum distribution
+### Ogren-Kheruntsyan
+* Width of the momentum distribution of the source condensate (TF approx) along direction i
+	w(S)_i =~ 1.99/R_i
+
+### Thomas-Fermi approximation of BEC wavefunction
+* Thomas-Fermi radius: R_i = sqrt(2*mu/(m*omega_i^2))
+* Chemical potential: mu = (15*N_0*a/abar)^0.4*hbar*omega_avg/2
+
+#### BEC parameters
+* Characteristic length of oscillator: abar = sqrt(hbar/(m*omega_avg))
+* Oscillator frequency: omega_avg = (omega_1*omega_2*omega_3)^(1/3)
+* Condensate population: N_0
