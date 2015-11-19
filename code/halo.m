@@ -71,7 +71,6 @@ xlim([0,pi]); ylim([0,2*pi]);
 
 
 %% Halo simulation visualisation
-% Simulation single-shot
 figure();
 for i = 1:2
     scatter3(P_in{i}(1,:),P_in{i}(2,:),P_in{i}(3,:),2,'b','filled');
