@@ -7,7 +7,7 @@
 % Pre-collision BEC momentum distribution is calculated from T-F approximation: requires population and mean momentum of colliding condensates, and trap frequency
 w_trap_bar = prod(w_trap)^(1/3);
 a_bar = sqrt(hbar/(m_He*w_trap_bar));       % mean characteristic length of trap
-mu = 1.4771*hbar*w_trap_bar*(N_0*a_He/w_trap_bar)^0.4;  % chemical potential
+mu = 1/2*hbar*w_trap_bar*(15*N_0*a_He/a_bar)^0.4;  % chemical potential
 
 % Thomas-Fermi radii
 R_bec = sqrt(2*mu/m_He)./w_trap;
