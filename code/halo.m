@@ -68,33 +68,19 @@ phi = linspace(0,2*pi,Nz_azim);
 
 figure();
 surf(THETA',PHI',V_ndiff);
-%title(['N_{sim}=',num2str(N_sim),', N_{pair}=',num2str(N_halo),', \Omega_{frac}=',num2str(zone_frac),', \sigma_{p1}=',mat2str(P_dist{1}{2},3),', \sigma_{p2}=',mat2str(P_dist{2}{2},3)]);
 title(['N_{sim}=',num2str(N_sim),', N_{halo}=',num2str(N_halo),', \Omega_{frac}=',num2str(zone_frac),', N_0=',num2str(N_0,2),', \omega=',mat2str(w_trap)]);
 xlabel('\Delta\theta'); ylabel('\Delta\phi'); zlabel('Normalised variance');
 xlim([0,pi]); ylim([0,2*pi]);
 
 
 %% Halo simulation visualisation
-% % Single halo
-% figure();
-% for i = 1:2
-%     scatter3(P_in{i}(1,:),P_in{i}(2,:),P_in{i}(3,:),2,'b','filled');
-%     hold on;
-% end
-% scatter3(P_halo(1,:),P_halo(2,:),P_halo(3,:),2,'r','filled');
-% title('Colliding Bose-Einstein condensates in momentum space (single shot)');
-% xlabel('p_{x}'); ylabel('p_{y}'); zlabel('p_{z}');
-% axis equal;
-
-% 3D scatter halo plot
+% 3D scatter source and halo plot
 figure();
 N_halo_plot = 5000;
 if N_halo_plot > N_sim*N_halo
     N_halo_plot = N_sim*N_halo;
 end
 scatter3(P_HALO_all(1,1:N_halo_plot),P_HALO_all(2,1:N_halo_plot),P_HALO_all(3,1:N_halo_plot),2,'r','filled');
-
-% Optional source scatter plot
 hold on;
 N_source_plot = round(N_halo_plot/2);
 for i=1:2
@@ -102,7 +88,7 @@ for i=1:2
     hold on;
 end
 title('Scattering halo in momentum space');
-xlabel('p_{x}'); ylabel('p_{y}'); zlabel('p_{z}');
+xlabel('p_{x}/P_{rec}'); ylabel('p_{y}/P_{rec}'); zlabel('p_{z}/P_{rec}');
 axis equal;
 
 % Halo momentum distribution
