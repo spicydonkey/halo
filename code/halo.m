@@ -20,7 +20,8 @@ end
 
 %% Simulation
 N_zone = zeros(Nz_polar*Nz_azim,N_sim);
-P_HALO = cell(N_sim,1);
+P_HALO = cell(N_sim,1);     % momenta in scattering halo per shot
+P_source = cell(2,1);       % randomly sampled momenta in collision source
 for i_sim = 1:N_sim
     close all;
     % run halo simulation
@@ -35,8 +36,11 @@ for i_sim = 1:N_sim
     % find number vs zones in this simulation and collate
     N_zone(:,i_sim) = halo_analyse(P_halo,zone_frac,Nz_polar,Nz_azim);
     
-    % save scattered halo momentum data
+    % save collision simulation
     P_HALO{i_sim} = P_halo;
+    for i_source=1:2
+        P_source{i_source} = [P_source{i_source} P_in{i_source}];
+    end
 end
 clear i_sim;
     
@@ -89,6 +93,14 @@ if N_halo_plot > N_sim*N_halo
     N_halo_plot = N_sim*N_halo;
 end
 scatter3(P_HALO_all(1,1:N_halo_plot),P_HALO_all(2,1:N_halo_plot),P_HALO_all(3,1:N_halo_plot),2,'r','filled');
+
+% Optional source scatter plot
+hold on;
+N_source_plot = round(N_halo_plot/2);
+for i=1:2
+    scatter3(P_source{i}(1,1:N_source_plot),P_source{i}(2,1:N_source_plot),P_source{i}(3,1:N_source_plot),2,'b','filled');
+    hold on;
+end
 title('Scattering halo in momentum space');
 xlabel('p_{x}'); ylabel('p_{y}'); zlabel('p_{z}');
 axis equal;
