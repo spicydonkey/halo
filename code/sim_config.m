@@ -6,7 +6,8 @@
 %% Constants
 hbar = 1.055e-34;
 m_He = 6.65e-27;
-a_He = 7.5e-9;      % s-wave scattering length of He*
+%a_He = 7.5e-9;      	% s-wave scattering length between He* m_x=1
+a_He = 5.3e-9;		% s-wave scattering length between He* m_x=0
 k_laser = 2*pi/(1083e-9);   % Raman/Bragg wave number
 
 
