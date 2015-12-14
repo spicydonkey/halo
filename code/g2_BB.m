@@ -6,8 +6,8 @@
 
 
 %% g2 parameters
-%p_delta = 0.2;      % scaled p-ball radius for g2 correlation evaluation
-p_delta = 5*w_halo;     % try
+p_delta = 0.2;      % scaled p-ball radius for g2 correlation evaluation
+%p_delta = 5*w_halo;     % try
 
 %% G2 momentum correlation function
 P_BB = cell(N_sim,1);

@@ -12,7 +12,7 @@ k_laser = 2*pi/(1083e-9);   % Raman/Bragg wave number
 
 
 %% Simulation
-N_sim=1000;         % number of simulations
+N_sim=100;         % number of simulations
 
 
 %% Experimental
@@ -28,7 +28,7 @@ P_dist{2}{1} = -P_dist{1}{1};   % BEC2 mean momentum (experimentally fix global 
 P_norm = norm(P_dist{1}{1});    % BEC com momentum (recoil velocity from Bragg/Raman) to normalise all other momenta
 
 % trap potential
-w_trap = 2*pi*[48;180;180];
+w_trap = 2*pi*[50;500;500];
 
 
 %% Number squeezing analysis
