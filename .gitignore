@@ -1,4 +1,7 @@
 *.asv
 *.m~
 *.mat
-
+*.fig
+*.odt
+*.pdf
+*.jpg
