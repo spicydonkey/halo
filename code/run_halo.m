@@ -3,7 +3,9 @@
 % DK Shin
 
 clear all; close all;
-tic;
+
+tic;    % begin timestamp
+
 % run('sim_config.m');
 % run('halo.m');
 % run('g2_BB.m');
@@ -15,4 +17,5 @@ halo;
 g2_BB;
 g2_histo;
 g2_gauss_fit;
-toc;
+
+toc;    % end timestamp
