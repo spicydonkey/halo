@@ -15,7 +15,7 @@ k_laser = 2*pi/wavelength_laser;    % Raman/Bragg transition laser wave-number
 
 
 %% Simulation
-N_sim=500;         % number of simulations to run
+N_sim=700;         % number of simulations to run
 
 
 %% Experimental parameters
@@ -26,7 +26,7 @@ N_halo=30;      % number of atoms in detected halo
 N_0 = 1e4;      % number of atoms in condensate
 
 % trap potential
-f_trap = [50;500;500];      % trap frequencies in Hz
+f_trap = [50;100;100];      % trap frequencies in Hz
 
 % mean/recoil momentum of condenstates
 P_dist{1}{1} = hbar*k_laser*[0;0;1];    % BEC1 mean momentum (3D-vector)

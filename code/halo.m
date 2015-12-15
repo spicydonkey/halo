@@ -100,10 +100,10 @@ P_HALO_abs = sqrt(sum(P_HALO_all.^2,1));    % momentum magnitude in halo
 halo_p_count = halo_p_count/sum(halo_p_count);  % normalise distribution
 
 halo_p_fit = fit(halo_p_bin.',halo_p_count.','gauss1'); % Gaussian fit
-w_halo = 0.8326*halo_p_fit.c1;
+w_halo = 0.8326*halo_p_fit.c1;      % HWHM width of scattering halo
 
 figure();
 bar(halo_p_bin,halo_p_count); hold on;
-plot(halo_p_fit,halo_p_bin,halo_p_count);
+plot(halo_p_fit,halo_p_bin,halo_p_count); hold off;
 title('Momentum distribution of scattering halo');
 xlabel('P/P_{rec}'); ylabel('Prob');

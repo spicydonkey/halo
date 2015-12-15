@@ -1,4 +1,5 @@
 %% g2 Gaussian fit
+% DK Shin
 
 % Create shifted g2 (i.e. g2-1) for Gaussian fit
 g2_0 = cell(3,1);
@@ -39,14 +40,18 @@ err_wBB = 0.8326*err_wBB;
 r_wBB_S = w_BB./w_p_dist;
 err_r_wBB_S = err_wBB./w_p_dist;
 
-% Plot
+% Plot ratio of corr length to source momentum width
 figure();
 errorbar([1,2,3],r_wBB_S,err_r_wBB_S,'ok'); hold on;
-plot([1,2,3],1.08*[1,1,1]); hold on;
-plot([1,2,3],sqrt(2)*[1,1,1]); hold on;
-title('\it w_i^{(BB)}/w_i^{(S)} \rm comparison between simulation and theory');
-ylim([1,2]);
-xlabel('axes index');
+plot([1,2,3],1.08*[1,1,1],'r'); hold on;
+plot([1,2,3],sqrt(2)*[1,1,1],'b'); hold on;
+title('Ratio of back-to-back correlation length to source momentum width:\it w_i^{(BB)}/w_i^{(S)}');
+ylim([0.5,2]);
+xlabel('axis');
+ylabel('w_i^{(BB)}/w_i^{(S)}');
+set(gca,'XTick',[1,2,3]);
+set(gca,'XTickLabel',axesName);
+legend({'Classical simulation','Quantum TF','Quantum Gaussian'});
 
 % g(2) correlation length vs. halo thickness
 r_wBB_halo = w_BB/w_halo;
@@ -54,4 +59,7 @@ err_r_wBB_halo = err_wBB/w_halo;
 figure();
 errorbar([1,2,3],r_wBB_halo,err_r_wBB_halo,'ok'); hold on;
 title('g^{(2)} correlation length vs. halo thickness: \it w_i^{(BB)}/w_{halo}');
-xlabel('axes index');
+xlabel('axis');
+ylabel('w_i^{(BB)}/w_{halo}');
+set(gca,'XTick',[1,2,3]);
+set(gca,'XTickLabel',axesName);
