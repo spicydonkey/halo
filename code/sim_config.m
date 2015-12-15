@@ -15,7 +15,7 @@ k_laser = 2*pi/wavelength_laser;    % Raman/Bragg transition laser wave-number
 
 
 %% Simulation
-N_sim=700;         % number of simulations to run
+N_sim=2500;         % number of simulations to run
 
 
 %% Experimental parameters

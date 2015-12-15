@@ -10,6 +10,6 @@ sim_config;
 halo;
 get_BB_pairs;
 g2_histo;
-g2_gauss_fit;
+g2_analysis;
 
 toc;    % end timestamp
