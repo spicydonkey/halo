@@ -8,48 +8,63 @@
 %   K_filt: NSHOTx2 cell-array of filtered k-vecs
 %
 
+%% configs
+dpsi=0.1;
+
+z_thresh=1;     % num of std from mean to set threshold level
+
+dpsi_lim=0.1;   % filtering bin size (rad)
 
 %% find noisy regions
-k=cell(1,2);
-for ii=1:2
-    k{ii}=vertcat(K{:,ii});
-end
-
 % count distribution around sphere
-naz=100;
-nel=50;
-dpsi=0.1;
-[n,az,el]=cellfun(@(kk) haloZoneCount(kk,naz,nel,dpsi,[],'simple'),k,'UniformOutput',false);
+[~,n]=summary_disthalo_ndist(K,[nAz,nEl],'flat');
 
 % eliminate polar caps
-z_max=0.7;      % max-z used to filter halos as bad
-b_pole=cellfun(@(ee)(abs(ee)>asin(z_max)),el,'UniformOutput',false);      % bool to bad region around poles
 for ii=1:2
-    n{ii}(b_pole{ii})=NaN;      % values around polar-caps are set to NaN
+    n{ii}(b_pole)=NaN;      % values around polar-caps are set to NaN
 end
 
 % set threshold level
-c_thresh=3;     % num of std from mean to set threshold level
-n_thresh=cellfun(@(nn)mean(nn(:),'omitnan')+c_thresh*std(nn(:),'omitnan'),n,'UniformOutput',false);
+n_thresh=cellfun(@(nn)mean(nn(:),'omitnan')+z_thresh*std(nn(:),'omitnan'),n,'UniformOutput',false);
 
 % get noisy regions
 b_noisy_zone=cellfun(@(nn,nt)nn>nt,n,n_thresh,'UniformOutput',false);
-az_noise=cellfun(@(t,b)t(b),az,b_noisy_zone,'UniformOutput',false);
-el_noise=cellfun(@(t,b)t(b),el,b_noisy_zone,'UniformOutput',false);
+Az_noise=cellfun(@(b)Az(b),b_noisy_zone,'UniformOutput',false);
+El_noise=cellfun(@(b)El(b),b_noisy_zone,'UniformOutput',false);
+
+% combined noisy region
+b_noisy_zone_comb=or(b_noisy_zone{:});
+
+%% filter density map
+n_filt=n;
+for ii=1:2
+    n_filt{ii}(b_noisy_zone{ii})=NaN;       % set to NaN
+end
+
+% compare raw + filtered
+for ii=1:2
+    figure();
+    
+    subplot(1,2,1);
+    plotFlatMapWrappedRad(Az,El,n{ii},'eckert4');
+    colorbar();
+    
+    subplot(1,2,2);
+    plotFlatMapWrappedRad(Az,El,n_filt{ii},'eckert4');
+    colorbar();
+end
 
 
 %% filter halo
-dpsi_lim=0.1;   % filtering bin size (rad)
-
 % find counts near noisy region
 S=cellfun(@(x)zxy2sphpol(x),K,'UniformOutput',false);
 b_bad_count=cellfun(@(s)false(size(s,1),1),S,'UniformOutput',false);    % initialise bad counts
 for mm=1:2
     tS=S(:,mm);
     bb_bad=cellfun(@(s)false(size(s,1),1),tS,'UniformOutput',false);     % initialise bad counts
-    for ii=1:length(az_noise{mm})
-        taz=az_noise{mm}(ii);
-        tel=el_noise{mm}(ii);
+    for ii=1:length(Az_noise{mm})
+        taz=Az_noise{mm}(ii);
+        tel=El_noise{mm}(ii);
         
         % get indices to counts in this noisy zone
         tb_bad=cellfun(@(s) inZone(taz,tel,s(:,1),s(:,2),dpsi_lim),tS,'UniformOutput',false);
